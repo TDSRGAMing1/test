@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Jailbreak Crews Leaderboard</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Luckiest+Guy&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Bangers&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/jpeg" href="https://pbs.twimg.com/media/FqXWKPIaMAATWPZ.jpg">
+
+    <style>
+        .link {
+            color: rgb(221, 211, 211);
+        }
+        body {
+            background-color: #222;
+            color: #bbb;
+            font-family: 'Bangers', sans-serif;
+        }
+
+        h1 {
+            margin-top: 30px;
+            font-family: 'Luckiest Guy', cursive;
+            color: #bbb;
+            text-align: center;
+        }
+
+        table {
+            margin-top: 20px;
+            border-collapse: collapse;
+            width: 100%;
+            color: #bbb;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #555;
+        }
+
+        thead {
+            background-color: #444;
+        }
+
+        footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #ccc;
+        }
+
+        #uptime {
+            font-size: 24px;
+            font-weight: bold;
+            color: #41EF1A;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 768px) {
+            table {
+                font-size: 14px;
+            }
+        }
+
+        /* Additional styles for mobile view */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 24px;
+            }
+
+            body {
+                font-size: 14px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            td, th {
+                padding: 6px;
+            }
+
+            th:first-child,
+            td:first-child {
+                min-width: 120px;
+                width: 120px;
+            }
+
+            th:nth-child(2),
+            td:nth-child(2) {
+                min-width: 90px;
+                width: 90px;
+            }
+
+            th:nth-child(3),
+            td:nth-child(3) {
+                min-width: 150px;
+                width: 150px;
+            }
+        }
+
+    </style>
+
+    <script>
+        $(document).ready(function() {
+            fetchData();
+            updateUptime();
+        });
+
+        function fetchData() {
+            $.getJSON('https://badimo.nyc3.digitaloceanspaces.com/crew_leaderboard/snapshot/top/50/season/3/latest.json', function(data) {
+                var table = data.table;
+                var headers = data.headers;
+
+                var tableHTML = '<table>';
+
+                // Generate table headers
+                tableHTML += '<thead><tr>';
+                for (var i = 0; i < headers.length; i++) {
+                    tableHTML += '<th>' + headers[i] + '</th>';
+                }
+                tableHTML += '</tr></thead>';
+
+                // Generate table rows
+                tableHTML += '<tbody>';
+                for (var i = 0; i < table.length; i++) {
+                    tableHTML += '<tr>';
+                    for (var j = 0; j < table[i].length; j++) {
+                        tableHTML += '<td>' + table[i][j] + '</td>';
+                    }
+                    tableHTML += '</tr>';
+                }
+                tableHTML += '</tbody></table>';
+
+                $('#table-container').html(tableHTML);
+            });
+        }
+
+        function updateUptime() {
+            var uptimeElement = document.getElementById('uptime');
+            var uptime = 0;
+
+            setInterval(function() {
+                uptime++;
+                uptimeElement.innerText = formatTime(uptime);
+            }, 1000);
+        }
+
+        function formatTime(time) {
+            var days = Math.floor(time / (60 * 60 * 24));
+            var hours = Math.floor((time % (60 * 60 * 24)) / (60 * 60));
+            var minutes = Math.floor((time % (60 * 60)) / 60);
+            var seconds = time % 60;
+
+            return pad(days) + ':' + pad(hours) + ':' + pad(minutes) + ':' + pad(seconds);
+        }
+
+        function pad(number) {
+            return (number < 10 ? '0' : '') + number;
+        }
+    </script>
+</head>
+<body>
+    <h1>Jailbreak Crews Leaderboard</h1>
+    <div id="table-container"></div>
+    <footer>Made by TDSRGAMing | <a class="link" href="https://twitter.com/TDSR_Random" target="_blank">TDSR_Random on Twitter</a> | <a class="link" href="https://www.roblox.com/users/2356756965/profile" target="_blank">TDSRGAMing's Roblox Profile</a> | <a class="link" href="https://www.youtube.com/channel/UCmO-ZhXsbvi9F2LSTuR1CEw" target="_blank">TDSRGAMing's Youtube channel</a>
+    </footer>
+</body>
+</html>
