@@ -103,10 +103,11 @@
     <script>
         $(document).ready(function() {
             fetchData();
+            updateUptime();
         });
 
         function fetchData() {
-            $.getJSON('https://server.2a2t.tk/table-data', function(data) {
+            $.getJSON('https://server.2a2t.tk/', function(data) {
                 var table = data.table;
                 var headers = data.headers;
 
@@ -132,6 +133,29 @@
 
                 $('#table-container').html(tableHTML);
             });
+        }
+
+        function updateUptime() {
+            var uptimeElement = document.getElementById('uptime');
+            var uptime = 0;
+
+            setInterval(function() {
+                uptime++;
+                uptimeElement.innerText = formatTime(uptime);
+            }, 1000);
+        }
+
+        function formatTime(time) {
+            var days = Math.floor(time / (60 * 60 * 24));
+            var hours = Math.floor((time % (60 * 60 * 24)) / (60 * 60));
+            var minutes = Math.floor((time % (60 * 60)) / 60);
+            var seconds = time % 60;
+
+            return pad(days) + ':' + pad(hours) + ':' + pad(minutes) + ':' + pad(seconds);
+        }
+
+        function pad(number) {
+            return (number < 10 ? '0' : '') + number;
         }
     </script>
 </head>
